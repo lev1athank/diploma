@@ -1,26 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    font-family: "PT Sans Caption", sans-serif;
+    background-color: #0f1113; 
+    background-image: 
+        linear-gradient(to right, #1e2023 1px, transparent 1px), 
+        linear-gradient(to bottom, #1e2023 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-attachment: fixed;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  button, input, optgroup, select, textarea {
+    font-family: inherit;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Для Chrome, Safari и Edge */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px; /* Чуть увеличил, чтобы было заметнее */
+    display: block;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #1e2023;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #3b82f6; 
+    border-radius: 20px;
+  }
+
+  /* Для Firefox (у него ограниченные возможности стилизации) */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #1e2023;
+  }
 }
