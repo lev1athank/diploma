@@ -1,13 +1,13 @@
 'use client'
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { ComponentCard } from "./ComponentCard"
-import { ApiResponse, HardwareComponent } from "../../../interface/specs";
+import { ApiResponse, HardwareComponent, CPUSpecs, GPUSpecs, MotherboardData } from "../../../interface/specs";
 
 interface Step {
     id: 'cpu' | 'gpu' | 'mem' | 'motherboard';
     label: string;
     selected: HardwareComponent | null;
-    urlTag: string;
+    urlTag: 'cpus' | 'gpus' | 'mem' | 'motherboard';
     lastSearch: string;
 }
 
@@ -27,6 +27,22 @@ const checkSocketMatch = (cpuSocket?: string, mbSocket?: string) => {
     return normalize(cpuSocket) === normalize(mbSocket);
 };
 
+const hasSocket = (specs?: HardwareComponent['specifications']): specs is { socket: string } => {
+    return !!specs && typeof (specs as any).socket === 'string';
+};
+
+const isCpuSpecs = (specs?: HardwareComponent['specifications']): specs is CPUSpecs => {
+    return !!specs && typeof (specs as any).tdp === 'string' && typeof (specs as any).socket === 'string';
+};
+
+const isGpuSpecs = (specs?: HardwareComponent['specifications']): specs is GPUSpecs => {
+    return !!specs && typeof (specs as any).tdp === 'string' && typeof (specs as any).memory_type !== 'undefined';
+};
+
+const isMotherboardData = (specs?: HardwareComponent['specifications']): specs is MotherboardData => {
+    return !!specs && typeof (specs as any).socket === 'string' && typeof (specs as any).form_factor === 'string';
+};
+
 export default function Configurator() {
     const [steps, setSteps] = useState<Step[]>(initialSteps)
     const [activeIdx, setActiveIdx] = useState(0)
@@ -40,12 +56,12 @@ export default function Configurator() {
     const selectedCpu = useMemo(() => steps.find(s => s.id === 'cpu')?.selected, [steps]);
     const selectedMb = useMemo(() => steps.find(s => s.id === 'motherboard')?.selected, [steps]);
 
-    const cpuSocket = selectedCpu?.specifications?.socket;
+    const cpuSocket = hasSocket(selectedCpu?.specifications) ? selectedCpu!.specifications.socket : undefined;
 
     // Ошибка совместимости для сайдбара
     const compatibilityError = useMemo(() => {
         if (selectedCpu && selectedMb) {
-            const mbSocket = selectedMb.specifications?.socket || (selectedMb as any).socket;
+            const mbSocket = hasSocket(selectedMb.specifications) ? selectedMb.specifications.socket : undefined;
             if (!checkSocketMatch(cpuSocket, mbSocket)) {
                 return `Сокеты не совпадают: CPU (${cpuSocket}) и MB (${mbSocket})`;
             }
@@ -103,14 +119,14 @@ export default function Configurator() {
     const totalTDP = useMemo(() => {
         const extractNumber = (str?: string) => parseInt(str?.replace(/\D/g, '') || '0');
 
-        const cpuTDP = extractNumber(selectedCpu?.specifications?.tdp);
+        const cpuTDP = extractNumber(isCpuSpecs(selectedCpu?.specifications) ? selectedCpu!.specifications.tdp : undefined);
         // Находим видеокарту в шагах
         const selectedGpu = steps.find(s => s.id === 'gpu')?.selected;
-        const gpuTDP = extractNumber(selectedGpu?.specifications?.tdp);
+        const gpuTDP = extractNumber(isGpuSpecs(selectedGpu?.specifications) ? selectedGpu!.specifications.tdp : undefined);
 
         if (cpuTDP === 0 && gpuTDP === 0) return 0;
         return cpuTDP + gpuTDP + 100; // +100W запас на остальную систему
-    }, [steps]);
+    }, [steps, selectedCpu]);
 
     // 2. Функция-заглушка для PDF
     const handleDownloadPDF = async () => {
@@ -155,7 +171,7 @@ export default function Configurator() {
         <main className="w-full h-screen overflow-hidden p-8 flex gap-6 text-white ">
             <div className="w-4/6 flex flex-col gap-6 h-full">
                 {/* ШАПКА ТАБОВ */}
-                <div className="bg-[#1E2023] border border-gray-700 h-20 flex-shrink-0 flex items-center justify-around">
+                <div className="bg-[#1E2023] border border-gray-700 h-20 shrink-0 flex items-center justify-around">
                     {steps.map((step, i) => (
                         <div
                             key={step.id}
@@ -171,7 +187,7 @@ export default function Configurator() {
                 </div>
 
                 {/* ПОИСК */}
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                     <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
@@ -190,7 +206,7 @@ export default function Configurator() {
                         ) : result?.data?.length ? (
                             result.data.map((item, i) => {
                                 // Проверка совместимости для текущей карточки в списке
-                                const itemSocket = item.specifications?.socket || (item as any).socket;
+                                const itemSocket = hasSocket(item.specifications) ? item.specifications.socket : undefined;
                                 const isCompatible = currentStep.id === 'motherboard'
                                     ? checkSocketMatch(cpuSocket, itemSocket)
                                     : true;
@@ -237,7 +253,7 @@ export default function Configurator() {
                             <div key={step.id} className={`border-l-2 pl-4 transition-all ${step.selected ? "border-blue-300" : "border-gray-800"}`}>
                                 <div className="flex justify-between items-start">
                                     <div className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">{step.label}</div>
-                                    {step.selected?.specifications?.socket && (
+                                    {hasSocket(step.selected?.specifications) && (
                                         <span className="text-[9px] text-blue-400/50 font-mono">{step.selected.specifications.socket}</span>
                                     )}
                                 </div>

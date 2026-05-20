@@ -87,7 +87,7 @@ export const ComponentCard = ({ name, type, specs, isSelected, onSelect, isCompa
             )}
 
             <div className="flex-1">
-                <h3 className="text-[13px] font-bold text-white mb-3 leading-snug group-hover:text-blue-300 transition-colors min-h-[36px] line-clamp-2 pr-8">
+                <h3 className="text-[13px] font-bold text-white mb-3 leading-snug group-hover:text-blue-300 transition-colors min-h-9 line-clamp-2 pr-8">
                     {name}
                 </h3>
 

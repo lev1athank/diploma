@@ -23,7 +23,7 @@ export default function AuditTab({ checks, toggleCheck, checked, passed, auditPc
                         <div
                             key={c.id}
                             className={`p-4 sm:p-5 flex items-start gap-4 transition-all relative overflow-hidden border ${
-                                c.compliant === true  ? "bg-[#93C5FD] bg-opacity-8 border-[#93C5FD] text-[#141517]"  :
+                                c.compliant === true  ? "bg-[#537eaf8c] bg-opacity-8 border-[#93C5FD] text-[#141517]"  :
                                 c.compliant === false ? "bg-red-600/6 border-red-600/30 text-red-200"   :
                                 "bg-[#141517] border-[#374151]"
                             }`}
