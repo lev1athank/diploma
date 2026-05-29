@@ -25,10 +25,13 @@ export const ComponentCard = ({ name, type, specs, isSelected, onSelect, isCompa
         switch (type) {
             case 'cpus': {
                 const s = specs as CPUSpecs;
+                const frequencyStr = (s.clock_speed || s.turbo_speed) 
+                    ? `${s.clock_speed || '—'} - ${s.turbo_speed || '—'}`
+                    : undefined;
                 return (
                     <>
                         {renderInfoRow("Ядра/Потоки", `${s.cores}/${s.threads}`)}
-                        {renderInfoRow("Частота", `${s.clock_speed} - ${s.turbo_speed}`)}
+                        {frequencyStr && renderInfoRow("Частота", frequencyStr)}
                         {renderInfoRow("Сокет", s.socket)}
                         {renderInfoRow("TDP", s.tdp)}
                     </>
@@ -38,7 +41,7 @@ export const ComponentCard = ({ name, type, specs, isSelected, onSelect, isCompa
                 const s = specs as GPUSpecs;
                 return (
                     <>
-                        {renderInfoRow("Память", `${s.memory_size} ${s.memory_type}`)}
+                        {renderInfoRow("Память", `${s.memory_size ? s.memory_size + " " + s.memory_type : '—'}`)}
                         {renderInfoRow("Частота", s.boost_clock)}
                         {renderInfoRow("TDP", s.tdp)}
                     </>

@@ -33,7 +33,8 @@ export default function RootLayout({
           <nav className="flex gap-8 items-center">
             <Link href={"/"} className="text-blue-400">TECHFORGE</Link>
             <Link href={"/Configurator"} >Конфигурация</Link>
-            <Link href={"/WorkplaceOrganization"}>организация рабочего места</Link>
+            <Link href={"/WorkplaceOrganization"}>Организация рабочего места</Link>
+            <Link href={"/WorkplaceOrganization"}>Техническое обслуживание</Link>
           </nav>
           <div className="flex gap-8 items-center">
             <span >Вход</span>
