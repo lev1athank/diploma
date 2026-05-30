@@ -14,7 +14,7 @@ export default function ScheduleTab({ config, intensity }: Props) {
 
     return (
         <div className="space-y-5">
-            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
+            <div className="bg-[#1E2023] rounded-3xl shadow-sm p-6">
                 <SectionLabel>Регламент технического обслуживания</SectionLabel>
 
                 {/* Легенда */}

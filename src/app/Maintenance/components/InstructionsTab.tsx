@@ -15,7 +15,7 @@ export default function InstructionsTab({ config, intensity }: Props) {
 
     return (
         <div className="space-y-5">
-            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
+            <div className="bg-[#1E2023] rounded-3xl shadow-sm p-6">
                 <SectionLabel>Пошаговые инструкции по обслуживанию</SectionLabel>
                 <p className="text-xs text-slate-500 uppercase tracking-wide mb-5">
                     Нажмите на работу, чтобы развернуть инструкцию

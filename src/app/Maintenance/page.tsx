@@ -80,21 +80,19 @@ export default function MaintenancePage() {
                 />
             </div>
 
-            {/* Блок папки (Табы + Контент) */}
-            <div className="w-full max-w-screen-2xl mx-auto">
-                
-                {/* Вкладки (корешки папки) */}
-                <div className="flex relative z-10 -mb-px rounded-t-3xl overflow-hidden border border-gray-800 bg-[#141517]">
-                    {TABS.map((t, index) => {
+            {/* Блок табов и контента */}
+            <div className="w-full max-w-screen-2xl mx-auto space-y-4">
+                <div className="flex items-center gap-2 border border-gray-800 rounded-3xl bg-[#141517] p-2">
+                    {TABS.map((t) => {
                         const isActive = activeTab === t.id;
                         return (
                             <button
                                 key={t.id}
                                 onClick={() => setActiveTab(t.id)}
-                                className={`relative flex-1 px-6 py-3.5 text-sm font-bold tracking-wider uppercase transition-colors focus:outline-none border-r border-gray-800 last:border-r-0 ${
+                                className={`flex-1 rounded-3xl px-5 py-3 text-sm font-bold tracking-wider uppercase transition ${
                                     isActive
-                                        ? 'bg-[#141517] text-[#c084fc] z-20' 
-                                        : 'bg-transparent text-slate-500 hover:text-white hover:bg-[#1E2023]'
+                                        ? 'bg-[#1E2023] text-[#c084fc] shadow-inner shadow-blue-950/10'
+                                        : 'bg-transparent text-slate-500 hover:text-white hover:bg-[#1E2023]/50'
                                 }`}
                             >
                                 {t.label}
@@ -103,14 +101,12 @@ export default function MaintenancePage() {
                     })}
                 </div>
 
-                {/* Основное тело папки (Контент) */}
-                <div className={`relative z-0 bg-[#141517] border border-gray-800 p-6 rounded-b-3xl shadow-sm ${isFirstTabActive ? 'rounded-tl-none' : ''}`}>
+                <div className="bg-[#1E2023] border border-gray-800 rounded-3xl p-6 shadow-sm">
                     {activeTab === 'schedule'    && <ScheduleTab     config={config} intensity={intensity} />}
                     {activeTab === 'instructions' && <InstructionsTab config={config} intensity={intensity} />}
                     {activeTab === 'thermal'      && <ThermalTab      config={config} />}
                     {activeTab === 'export'       && <ExportTab       config={config} intensity={intensity} />}
                 </div>
-                
             </div>
         </div>
     );

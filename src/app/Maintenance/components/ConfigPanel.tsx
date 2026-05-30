@@ -60,7 +60,7 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
     }, [config.gpuName, openGpu]);
 
     return (
-        <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6 space-y-6">
+        <div className="bg-[#1E2023] border border-gray-800 rounded-3xl shadow-sm p-6 space-y-6">
             {/* Конфигурация */}
             <div>
                 <SectionLabel>Конфигурация системы</SectionLabel>
