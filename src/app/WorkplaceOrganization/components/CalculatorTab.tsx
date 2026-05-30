@@ -16,7 +16,7 @@ export default function CalculatorTab({ height, setHeight, season, setSeason, ca
         <div className="grid gap-6">
             <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6">
                 <div className="space-y-6">
-                    <div className="bg-[#1E2023] border border-[#374151] p-6">
+                    <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                         <SectionLabel>Входные данные</SectionLabel>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -66,7 +66,7 @@ export default function CalculatorTab({ height, setHeight, season, setSeason, ca
                         </div>
                     </div>
 
-                    <div className="bg-[#1E2023] border border-[#374151] p-6">
+                    <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                         <SectionLabel>Расчётные параметры мебели</SectionLabel>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             {[
@@ -95,7 +95,7 @@ export default function CalculatorTab({ height, setHeight, season, setSeason, ca
                         </div>
                     </div>
 
-                    <div className="bg-[#1E2023] border border-[#374151] p-6">
+                    <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                         <SectionLabel>Снижение ЭМИ и шума</SectionLabel>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {[
@@ -104,7 +104,7 @@ export default function CalculatorTab({ height, setHeight, season, setSeason, ca
                                 { tip: "Мониторы не напротив друг друга — расстояние между ними ≥ 1,2 м",       ref: "СанПиН 2.2.3670-20" },
                                 { tip: "Системный блок в закрытый корпус, виброгасящие подставки под него",     ref: "СанПиН 1.2.3685-21" },
                             ].map((t, i) => (
-                                <div key={i} className="border border-[#374151] bg-[#141517] p-4 flex flex-col gap-3">
+                                <div key={i} className="rounded-3xl border border-gray-800 bg-[#141517] p-4 flex flex-col gap-3 shadow-sm">
                                     <p className="text-sm text-slate-100 leading-relaxed">{t.tip}</p>
                                     <span className="text-xs text-slate-400 uppercase tracking-[0.25em]">{t.ref}</span>
                                 </div>
@@ -114,10 +114,10 @@ export default function CalculatorTab({ height, setHeight, season, setSeason, ca
                 </div>
 
                 <div className="space-y-6">
-                    <div className="bg-[#1E2023] border border-[#374151] p-6">
+                    <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                         <SectionLabel>Схема рабочего места</SectionLabel>
                         <WorkplaceScheme calc={calc} />
-                        <div className="flex flex-wrap gap-4 justify-center mt-5 pt-5 border-t border-[#374151]">
+                        <div className="flex flex-wrap gap-4 justify-center mt-5 pt-5 border-t border-gray-800">
                             {[
                                 { color: "bg-[#93C5FD]", label: "Высота стола" },
                                 { color: "bg-[#60A5FA]", label: "Высота стула" },

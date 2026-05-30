@@ -54,9 +54,9 @@ export default function MaintenancePage() {
     }, []);
 
     return (
-        <div className="min-h-screen text-white font-sans bg-[#0d0e12]">
+        <div className="min-h-screen text-white font-sans w-full max-w-none px-6 lg:px-10 py-8">
             {/* Шапка страницы */}
-            <div className="px-8 pt-8 pb-0 w-full max-w-screen-2xl mx-auto">
+            <div className="w-full max-w-screen-2xl mx-auto">
                 <div className="mb-6">
                     <div className="text-[10px] uppercase tracking-[0.4em] text-blue-400 mb-2 font-bold">
                         Техническое обслуживание
@@ -71,7 +71,7 @@ export default function MaintenancePage() {
             </div>
 
             {/* Панель конфигурации */}
-            <div className="px-8 pb-6 w-full max-w-screen-2xl mx-auto">
+            <div className="w-full max-w-screen-2xl mx-auto mb-8">
                 <ConfigPanel
                     config={config}
                     setConfig={setConfig}
@@ -81,25 +81,21 @@ export default function MaintenancePage() {
             </div>
 
             {/* Блок папки (Табы + Контент) */}
-            <div className="px-8 pb-8 w-full max-w-screen-2xl mx-auto">
+            <div className="w-full max-w-screen-2xl mx-auto">
                 
                 {/* Вкладки (корешки папки) */}
-                <div className="flex relative z-10 -mb-[1px]">
-                    {TABS.map(t => {
+                <div className="flex relative z-10 -mb-px rounded-t-3xl overflow-hidden border border-gray-800 bg-[#141517]">
+                    {TABS.map((t, index) => {
                         const isActive = activeTab === t.id;
                         return (
                             <button
                                 key={t.id}
                                 onClick={() => setActiveTab(t.id)}
-                                // focus:outline-none убирает системную обводку при клике
-                                className={`
-                                    relative px-6 py-3.5 text-sm font-bold tracking-wider uppercase 
-                                    rounded-t-xl transition-colors focus:outline-none border
-                                    ${isActive
-                                        ? 'bg-[#141517] border-[#374151] border-b-[#141517] text-[#c084fc] z-20' 
-                                        : 'bg-transparent border-transparent border-b-[#374151] text-slate-500 hover:text-slate-300 hover:bg-[#141517]/50 z-10'
-                                    }
-                                `}
+                                className={`relative flex-1 px-6 py-3.5 text-sm font-bold tracking-wider uppercase transition-colors focus:outline-none border-r border-gray-800 last:border-r-0 ${
+                                    isActive
+                                        ? 'bg-[#141517] text-[#c084fc] z-20' 
+                                        : 'bg-transparent text-slate-500 hover:text-white hover:bg-[#1E2023]'
+                                }`}
                             >
                                 {t.label}
                             </button>
@@ -108,10 +104,7 @@ export default function MaintenancePage() {
                 </div>
 
                 {/* Основное тело папки (Контент) */}
-                <div className={`
-                    relative z-0 bg-[#141517] border border-[#374151] p-6 shadow-2xl
-                    rounded-xl ${isFirstTabActive ? 'rounded-tl-none' : ''}
-                `}>
+                <div className={`relative z-0 bg-[#141517] border border-gray-800 p-6 rounded-b-3xl shadow-sm ${isFirstTabActive ? 'rounded-tl-none' : ''}`}>
                     {activeTab === 'schedule'    && <ScheduleTab     config={config} intensity={intensity} />}
                     {activeTab === 'instructions' && <InstructionsTab config={config} intensity={intensity} />}
                     {activeTab === 'thermal'      && <ThermalTab      config={config} />}

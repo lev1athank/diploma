@@ -20,11 +20,11 @@ export default function ThermalTab({ config }: Props) {
     return (
         <div className="space-y-5">
             {/* Контекст */}
-            <div className="bg-[#1E2023] border border-[#374151] p-6">
+            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                 <SectionLabel>Подбор термопасты</SectionLabel>
 
                 {maxTdp > 0 ? (
-                    <div className="flex flex-wrap gap-4 mb-4 p-4 bg-[#141517] border border-[#374151]">
+                    <div className="flex flex-wrap gap-4 mb-4 rounded-3xl p-4 bg-[#141517] border border-gray-800">
                         <div className="flex items-center gap-3">
                             <span className="text-[10px] text-slate-500 uppercase tracking-widest">Макс. TDP системы:</span>
                             <span className="text-lg font-black font-mono text-[#93C5FD]">{maxTdp} Вт</span>
@@ -54,7 +54,7 @@ export default function ThermalTab({ config }: Props) {
                     {recommended.map(paste => {
                         const cat = categoryLabel[paste.category];
                         return (
-                            <div key={paste.brand} className="border border-[#374151] bg-[#141517] p-4 flex items-start gap-4 hover:border-[#93C5FD]/30 transition-colors">
+                            <div key={paste.brand} className="rounded-3xl border border-gray-800 bg-[#141517] p-4 flex items-start gap-4 hover:border-[#93C5FD]/30 transition-colors">
                                 <div className="shrink-0 text-center pt-1">
                                     <div className="text-xl font-black text-[#93C5FD] font-mono leading-none">{paste.conductivity}</div>
                                     <div className="text-[9px] text-slate-600 uppercase tracking-wide">Вт/(м·К)</div>
@@ -85,7 +85,7 @@ export default function ThermalTab({ config }: Props) {
                         </div>
                         <div className="space-y-2 opacity-40">
                             {notRecommended.map(paste => (
-                                <div key={paste.brand} className="border border-[#374151]/50 bg-[#141517]/50 p-3 flex items-center gap-4">
+                                <div key={paste.brand} className="rounded-3xl border border-gray-800/50 bg-[#141517]/50 p-3 flex items-center gap-4">
                                     <div className="shrink-0 text-center">
                                         <div className="text-base font-black text-slate-600 font-mono">{paste.conductivity}</div>
                                         <div className="text-[9px] text-slate-700 uppercase">Вт/(м·К)</div>
@@ -101,7 +101,7 @@ export default function ThermalTab({ config }: Props) {
                 )}
 
                 {/* Советы по нанесению */}
-                <div className="mt-6 border border-[#374151] bg-[#141517] p-5">
+                <div className="mt-6 rounded-3xl border border-gray-800 bg-[#141517] p-5">
                     <div className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4 flex items-center gap-2">
                         <span className="text-blue-400">💡</span> Советы по нанесению
                     </div>

@@ -103,11 +103,11 @@ ${tasks.map((t, i) => `
 
     return (
         <div className="space-y-5">
-            <div className="bg-[#1E2023] border border-[#374151] p-6">
+            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                 <SectionLabel>Экспорт документации</SectionLabel>
 
                 {/* Превью */}
-                <div className="mb-6 p-4 bg-[#141517] border border-[#374151] space-y-2">
+                <div className="mb-6 rounded-3xl p-4 bg-[#141517] border border-gray-800 space-y-2">
                     <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-3">Содержимое документа</div>
                     <div className="flex justify-between text-sm border-b border-[#374151]/50 pb-2">
                         <span className="text-slate-400">Конфигурация</span>
@@ -129,7 +129,7 @@ ${tasks.map((t, i) => `
 
                 {/* Кнопки */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="border border-[#374151] p-5 space-y-3 bg-[#141517]">
+                    <div className="rounded-3xl border border-gray-800 p-5 space-y-3 bg-[#141517]">
                         <div className="flex items-center gap-3">
                             <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -153,7 +153,7 @@ ${tasks.map((t, i) => `
                         </button>
                     </div>
 
-                    <div className="border border-[#374151] p-5 space-y-3 bg-[#141517]">
+                    <div className="rounded-3xl border border-gray-800 p-5 space-y-3 bg-[#141517]">
                         <div className="flex items-center gap-3">
                             <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 10h18M3 14h18M10 3v18M14 3v18M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
@@ -178,7 +178,7 @@ ${tasks.map((t, i) => `
                     </div>
                 </div>
 
-                <div className="mt-4 p-3 bg-[#141517] border border-[#374151] flex items-start gap-3">
+                <div className="mt-4 rounded-3xl p-3 bg-[#141517] border border-gray-800 flex items-start gap-3">
                     <span className="text-blue-400 text-sm mt-0.5">ℹ</span>
                     <p className="text-[10px] text-slate-500 uppercase tracking-wide leading-relaxed">
                         PDF открывается в новой вкладке с диалогом печати. CSV открывается в Excel/LibreOffice Calc — при открытии выбирайте разделитель «точка с запятой».

@@ -14,26 +14,26 @@ export default function ScheduleTab({ config, intensity }: Props) {
 
     return (
         <div className="space-y-5">
-            <div className="bg-[#1E2023] border border-[#374151] p-6">
+            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                 <SectionLabel>Регламент технического обслуживания</SectionLabel>
 
                 {/* Легенда */}
                 <div className="flex flex-wrap gap-3 mb-6">
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-slate-500">
+                    <div className="rounded-3xl bg-[#141517] border border-gray-800 p-4 flex items-center gap-2 text-[10px] uppercase tracking-widest text-slate-500">
                         <span>Конфигурация:</span>
                         <span className="text-white font-bold">{config.cpuName || 'CPU не задан'}</span>
                         {config.hasDiscreteGpu && config.gpuName && (
                             <><span className="text-slate-600">+</span><span className="text-white font-bold">{config.gpuName}</span></>
                         )}
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-slate-500 ml-auto">
+                    <div className="rounded-3xl bg-[#141517] border border-gray-800 p-4 flex items-center gap-2 text-[10px] uppercase tracking-widest text-slate-500 ml-auto">
                         <span>Профиль:</span>
                         <span className={`font-black ${intensityColor}`}>{intensity === 'high' ? 'ВЫСОКАЯ' : intensity === 'medium' ? 'СРЕДНЯЯ' : 'ЛЁГКАЯ'}</span>
                     </div>
                 </div>
 
                 {/* Таблица */}
-                <div className="overflow-x-auto border border-[#374151]">
+                <div className="overflow-x-auto rounded-3xl border border-gray-800">
                     <table className="w-full text-sm">
                         <thead>
                             <tr className="border-b border-[#374151] bg-[#141517]">
@@ -70,7 +70,7 @@ export default function ScheduleTab({ config, intensity }: Props) {
                 </div>
 
                 {/* Подсказка */}
-                <div className="mt-4 p-3 bg-[#141517] border border-[#374151] flex items-start gap-3">
+                <div className="mt-4 rounded-3xl p-3 bg-[#141517] border border-gray-800 flex items-start gap-3">
                     <span className="text-blue-400 text-sm mt-0.5">ℹ</span>
                     <p className="text-[10px] text-slate-500 uppercase tracking-wide leading-relaxed">
                         {intensity === 'high'

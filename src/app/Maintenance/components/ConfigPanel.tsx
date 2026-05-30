@@ -60,7 +60,7 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
     }, [config.gpuName, openGpu]);
 
     return (
-        <div className="bg-[#1E2023] border border-[#374151] p-6 space-y-6">
+        <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6 space-y-6">
             {/* Конфигурация */}
             <div>
                 <SectionLabel>Конфигурация системы</SectionLabel>
@@ -70,7 +70,7 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     
                     {/* CPU */}
-                    <div className="bg-[#141517] border border-[#374151] p-4 space-y-3">
+                    <div className="rounded-3xl bg-[#141517] border border-gray-800 p-4 space-y-3">
                         <div className="flex items-center gap-2">
                             <span className="text-[10px] font-black uppercase tracking-widest text-[#93C5FD] bg-[#93C5FD]/10 border border-[#93C5FD]/20 px-2 py-1">CPU</span>
                             <span className="text-xs text-slate-500 uppercase tracking-wide">Процессор</span>
@@ -88,11 +88,11 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
                                     setOpenCpu(true);
                                 }}
                                 placeholder="Напр: AMD Ryzen 7 7700X"
-                                className="w-full bg-[#0f1113] border border-[#374151] text-white text-sm px-3 py-2 focus:outline-none focus:border-[#93C5FD] transition-colors placeholder:text-slate-600"
+                                className="w-full bg-[#0f1113] border border-gray-800 text-white text-sm px-3 py-2 focus:outline-none focus:border-[#93C5FD] transition-colors placeholder:text-slate-600"
                             />
                             {/* Выпадающий список CPU */}
                             {openCpu && config.cpuName.length >= 2 && (
-                                <div className="absolute top-full left-0 right-0 mt-1 bg-[#1a1c1f] border border-[#374151] shadow-2xl z-50 max-h-48 overflow-y-auto custom-scrollbar">
+                                <div className="absolute top-full left-0 right-0 mt-1 bg-[#181b1f] border border-gray-800 shadow-2xl z-50 max-h-48 overflow-y-auto custom-scrollbar rounded-3xl">
                                     {loadingCpu ? (
                                         <div className="p-3 text-xs text-slate-500 text-center uppercase tracking-widest">Загрузка...</div>
                                     ) : cpuResults.length > 0 ? (
@@ -132,7 +132,7 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
                     </div>
 
                     {/* GPU */}
-                    <div className="bg-[#141517] border border-[#374151] p-4 space-y-3">
+                    <div className="rounded-3xl bg-[#141517] border border-gray-800 p-4 space-y-3">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <span className="text-[10px] font-black uppercase tracking-widest text-purple-400 bg-purple-400/10 border border-purple-400/20 px-2 py-1">GPU</span>
@@ -142,7 +142,7 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
                                 <span className="text-[10px] text-slate-500 uppercase">Дискретная</span>
                                 <div
                                     onClick={() => setConfig({ ...config, hasDiscreteGpu: !config.hasDiscreteGpu })}
-                                    className={`w-10 h-5 border relative transition-all cursor-pointer ${config.hasDiscreteGpu ? 'bg-[#93C5FD]/20 border-[#93C5FD]' : 'bg-[#141517] border-[#374151]'}`}
+                                    className={`w-10 h-5 border relative transition-all cursor-pointer ${config.hasDiscreteGpu ? 'bg-[#93C5FD]/20 border-[#93C5FD]' : 'bg-[#141517] border-gray-800'}`}
                                 >
                                     <div className={`absolute top-0.5 w-4 h-4 transition-all ${config.hasDiscreteGpu ? 'bg-[#93C5FD] left-5' : 'bg-slate-600 left-0.5'}`} />
                                 </div>
@@ -163,11 +163,11 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
                                             setOpenGpu(true);
                                         }}
                                         placeholder="Напр: NVIDIA RTX 4070"
-                                        className="w-full bg-[#0f1113] border border-[#374151] text-white text-sm px-3 py-2 focus:outline-none focus:border-[#93C5FD] transition-colors placeholder:text-slate-600"
+                                        className="w-full bg-[#0f1113] border border-gray-800 text-white text-sm px-3 py-2 focus:outline-none focus:border-[#93C5FD] transition-colors placeholder:text-slate-600"
                                     />
                                     {/* Выпадающий список GPU */}
                                     {openGpu && config.gpuName.length >= 2 && (
-                                        <div className="absolute top-full left-0 right-0 mt-1 bg-[#1a1c1f] border border-[#374151] shadow-2xl z-50 max-h-48 overflow-y-auto custom-scrollbar">
+                                        <div className="absolute top-full left-0 right-0 mt-1 bg-[#181b1f] border border-gray-800 shadow-2xl z-50 max-h-48 overflow-y-auto custom-scrollbar rounded-3xl">
                                             {loadingGpu ? (
                                                 <div className="p-3 text-xs text-slate-500 text-center uppercase tracking-widest">Загрузка...</div>
                                             ) : gpuResults.length > 0 ? (
@@ -221,7 +221,7 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
                         <div
                             key={key}
                             onClick={() => setIntensity(key)}
-                            className={`cursor-pointer border-2 p-4 transition-all hover:scale-[1.02] ${intensity === key ? val.color + ' border-opacity-100' : 'border-[#374151] bg-[#141517] hover:border-slate-500'}`}
+                            className={`cursor-pointer rounded-3xl border-2 p-4 transition-all hover:scale-[1.02] ${intensity === key ? val.color + ' border-opacity-100 bg-[#1E2023]' : 'border-gray-800 bg-[#141517] hover:border-slate-500'}`}
                         >
                             <div className={`text-xs font-black uppercase tracking-widest mb-1 ${intensity === key ? '' : 'text-slate-400'}`}>{val.label}</div>
                             <div className="text-[10px] text-slate-500 leading-relaxed">{val.description}</div>

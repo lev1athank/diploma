@@ -33,9 +33,9 @@ export default function EnvironmentTab({ season, climate }: Props) {
                 </div>
             </div>
 
-            <div className="bg-[#1E2023] border border-[#374151] p-5">
+            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-5">
                 <SectionLabel>Нормы ЭМИ для ВДТ — СанПиН 1.2.3685-21</SectionLabel>
-                <div className="overflow-x-auto border border-[#374151] bg-[#141517]">
+                <div className="overflow-x-auto border border-gray-800 bg-[#141517] rounded-3xl">
                     <table className="w-full text-sm">
                         <thead>
                             <tr className="border-b border-[#374151]">

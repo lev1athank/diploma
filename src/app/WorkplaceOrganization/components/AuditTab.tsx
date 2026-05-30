@@ -12,7 +12,7 @@ type Props = {
 export default function AuditTab({ checks, toggleCheck, checked, passed, auditPct }: Props) {
     return (
         <div className="space-y-5">
-            <div className="bg-[#1E2023] border border-[#374151] p-6">
+            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                 <SectionLabel>Интерактивный аудит рабочего места</SectionLabel>
                 <p className="text-sm text-slate-300 uppercase tracking-wide mb-5">
                     Нажмите ✓ или ✗ по каждому пункту для оценки соответствия нормам
@@ -65,7 +65,7 @@ export default function AuditTab({ checks, toggleCheck, checked, passed, auditPc
                 </div>
 
                 {checked > 0 && (
-                    <div className="mt-6 p-5 bg-[#141517] border border-[#374151] flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <div className="mt-6 p-5 bg-[#141517] border border-gray-800 rounded-3xl shadow-sm flex flex-col gap-4 sm:flex-row sm:items-center">
                         <div>
                             <div className={`text-4xl sm:text-5xl font-black ${auditPct >= 80 ? "text-[#93C5FD]" : auditPct >= 50 ? "text-amber-400" : "text-red-400"}`}>
                                 {passed}<span className="text-slate-500 text-2xl">/{checked}</span>

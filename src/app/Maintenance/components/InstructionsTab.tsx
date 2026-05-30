@@ -15,13 +15,13 @@ export default function InstructionsTab({ config, intensity }: Props) {
 
     return (
         <div className="space-y-5">
-            <div className="bg-[#1E2023] border border-[#374151] p-6">
+            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                 <SectionLabel>Пошаговые инструкции по обслуживанию</SectionLabel>
                 <p className="text-xs text-slate-500 uppercase tracking-wide mb-5">
                     Нажмите на работу, чтобы развернуть инструкцию
                 </p>
 
-                <div className="space-y-2">
+                <div className="space-y-3">
                     {tasks.map((task, i) => {
                         const isOpen = openId === task.id;
                         const interval = getInterval(task, intensity);
@@ -29,7 +29,7 @@ export default function InstructionsTab({ config, intensity }: Props) {
                         return (
                             <div
                                 key={task.id}
-                                className={`border transition-all ${isOpen ? 'border-[#93C5FD]/40 bg-[#93C5FD]/3' : 'border-[#374151] bg-[#141517] hover:border-slate-500'}`}
+                                className={`overflow-hidden rounded-3xl border transition-all ${isOpen ? 'border-[#93C5FD]/40 bg-[#93C5FD]/5' : 'border-gray-800 bg-[#141517] hover:border-slate-500'}`}
                             >
                                 {/* Заголовок аккордеона */}
                                 <button
@@ -59,7 +59,7 @@ export default function InstructionsTab({ config, intensity }: Props) {
                                     <div className="px-4 pb-5 space-y-5 border-t border-[#374151]">
                                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
                                             {/* Инструменты */}
-                                            <div className="bg-[#141517] border border-[#374151] p-4">
+                                            <div className="rounded-3xl bg-[#141517] border border-gray-800 p-4">
                                                 <div className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3 flex items-center gap-2">
                                                     <span className="text-yellow-400">🔧</span> Инструменты
                                                 </div>
@@ -74,7 +74,7 @@ export default function InstructionsTab({ config, intensity }: Props) {
                                             </div>
 
                                             {/* Меры безопасности */}
-                                            <div className="bg-[#141517] border border-red-900/30 p-4">
+                                            <div className="rounded-3xl bg-[#141517] border border-red-900/30 p-4">
                                                 <div className="text-[10px] font-black uppercase tracking-widest text-red-400 mb-3 flex items-center gap-2">
                                                     <span>⚠</span> Меры безопасности
                                                 </div>
@@ -89,7 +89,7 @@ export default function InstructionsTab({ config, intensity }: Props) {
                                             </div>
 
                                             {/* Итог */}
-                                            <div className="bg-[#141517] border border-emerald-900/30 p-4">
+                                            <div className="rounded-3xl bg-[#141517] border border-emerald-900/30 p-4">
                                                 <div className="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-3 flex items-center gap-2">
                                                     <span>✓</span> Признаки успеха
                                                 </div>
