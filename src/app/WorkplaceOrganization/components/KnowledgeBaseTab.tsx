@@ -4,7 +4,7 @@ import SectionLabel from "./SectionLabel";
 export default function KnowledgeBaseTab() {
     return (
         <div className="space-y-6">
-            <div className="bg-[#1E2023] border border-[#374151] p-6">
+            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                 <SectionLabel>Нормативная база</SectionLabel>
                 <div className="space-y-3">
                     {[
@@ -22,9 +22,9 @@ export default function KnowledgeBaseTab() {
                 </div>
             </div>
 
-            <div className="bg-[#1E2023] border border-[#374151] p-6">
+            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                 <SectionLabel>Параметры мебели (ГОСТ)</SectionLabel>
-                <div className="overflow-x-auto border border-[#374151] bg-[#141517]">
+                <div className="overflow-x-auto border border-gray-800 bg-[#141517] rounded-3xl">
                     <table className="w-full text-sm">
                         <thead>
                             <tr className="border-b border-[#374151]">
@@ -53,7 +53,7 @@ export default function KnowledgeBaseTab() {
                 </div>
             </div>
 
-            <div className="bg-[#1E2023] border border-[#374151] p-6">
+            <div className="bg-[#141517] border border-gray-800 rounded-3xl shadow-sm p-6">
                 <SectionLabel>Требования к освещению</SectionLabel>
                 <div className="space-y-2">
                     {[

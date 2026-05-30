@@ -35,24 +35,24 @@ export default function ErgonomicsModule() {
         setChecks(prev => prev.map(c => c.id === id ? { ...c, compliant: c.compliant === val ? null : val } : c));
 
     return (
-        <div className="min-h-screen  text-white font-sans">
-            <div className="border-b border-[#374151] bg-[#141517] flex">
+        <div className="min-h-screen text-white font-sans w-full max-w-none px-6 lg:px-10 py-8">
+            <div className="border border-[#374151] bg-[#141517] rounded-3xl overflow-hidden shadow-sm flex">
                 {TABS.map(t => (
                     <button
                         key={t.id}
                         onClick={() => setActiveTab(t.id)}
-                        className={`flex-1 py-4 text-sm font-black uppercase  transition-all border-b-2 ${
+                        className={`flex-1 py-4 text-sm font-black uppercase text-center transition-all ${
                             activeTab === t.id
-                                ? "border-[#93C5FD] text-[#93C5FD] bg-[#1E2023]"
-                                : "border-transparent text-slate-500 hover:text-slate-300"
-                        }`}
+                                ? "border-b-4 border-[#93C5FD] bg-[#1E2023] text-[#93C5FD]"
+                                : "border-b-4 border-transparent text-slate-400 hover:text-white bg-[#141517] hover:bg-[#1E2023]"
+                        } ${t.id === TABS[0].id ? "rounded-l-3xl" : ""} ${t.id === TABS[TABS.length-1].id ? "rounded-r-3xl" : ""}`}
                     >
                         {t.label}
                     </button>
                 ))}
             </div>
 
-            <div className="px-8 py-10 w-full max-w-screen-2xl mx-auto">
+            <div className="mt-8 w-full max-w-screen-2xl mx-auto space-y-8">
                 {activeTab === "calc" && (
                     <CalculatorTab
                         height={height}

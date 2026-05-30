@@ -1,17 +1,16 @@
-'use client'
-import { CPUSpecs, GPUSpecs, MemoryData, MotherboardData } from "../../../interface/specs";
+"use client"
+import { CPUSpecs, GPUSpecs, MemoryData, MotherboardData, HardwareComponent } from "../../../interface/specs";
 
 interface ComponentCardProps {
-    name: string;
-    slug: string;
-    type: 'cpus' | 'gpus' | 'mem' | 'motherboard';
-    specs?: CPUSpecs | GPUSpecs | MemoryData | MotherboardData;
+    component: HardwareComponent;
     isSelected: boolean;
     onSelect: () => void;
     isCompatible?: boolean; // Добавляем в интерфейс
 }
 
-export const ComponentCard = ({ name, type, specs, isSelected, onSelect, isCompatible = true }: ComponentCardProps) => {
+export const ComponentCard = ({ component, isSelected, onSelect, isCompatible = true }: ComponentCardProps) => {
+
+    const { name, specifications: specs } = component;
 
     const renderInfoRow = (label: string, value: string | number | undefined) => (
         <div className="flex justify-between border-b border-gray-800/40 py-1 items-center gap-2">
@@ -20,8 +19,18 @@ export const ComponentCard = ({ name, type, specs, isSelected, onSelect, isCompa
         </div>
     );
 
+    const detectType = (s?: any): 'cpus' | 'gpus' | 'mem' | 'motherboard' | null => {
+        if (!s) return null;
+        if (typeof s.cores !== 'undefined' || typeof s.threads !== 'undefined' || typeof s.clock_speed !== 'undefined') return 'cpus';
+        if (typeof s.memory_size !== 'undefined' || typeof s.boost_clock !== 'undefined' || typeof s.core_clock !== 'undefined') return 'gpus';
+        if (typeof s.speed !== 'undefined' && Array.isArray(s.speed)) return 'mem';
+        if (typeof s.form_factor !== 'undefined' || typeof s.max_memory !== 'undefined') return 'motherboard';
+        return null;
+    };
+
     const renderContent = () => {
         if (!specs) return null;
+        const type = detectType(specs);
         switch (type) {
             case 'cpus': {
                 const s = specs as CPUSpecs;
@@ -76,9 +85,7 @@ export const ComponentCard = ({ name, type, specs, isSelected, onSelect, isCompa
     return (
         <div
             onClick={onSelect}
-            className={`group cursor-pointer bg-[#1E2023] border-2 p-4 flex flex-col gap-3 transition-all relative overflow-hidden ${!isCompatible ? "opacity-50 grayscale-[0.5]" : "" // Приглушаем несовместимые
-                } ${isSelected ? "border-blue-400" : "border-gray-800"
-                }`}
+            className={`group cursor-pointer bg-[#141517] border border-gray-800 rounded-2xl p-4 flex flex-col gap-3 transition-all relative overflow-hidden shadow-sm ${!isCompatible ? "opacity-50 grayscale-[0.5]" : "hover:border-blue-400 hover:shadow-blue-950/10"} ${isSelected ? "border-blue-400" : ""}`}
         >
             {/* Плашка несовместимости */}
             {!isCompatible && (
