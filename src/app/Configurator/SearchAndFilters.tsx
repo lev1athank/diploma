@@ -26,10 +26,10 @@ function FilterButton({ active, label, onClick }: { active: boolean; label: stri
     return (
         <button
             onClick={onClick}
-            className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider border transition-all ${
+            className={`rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-wider border transition-all ${
                 active
                     ? 'bg-blue-400 text-black border-blue-400'
-                    : 'bg-transparent text-gray-500 border-gray-700 hover:border-gray-500 hover:text-gray-300'
+                    : 'bg-transparent text-gray-400 border-gray-700 hover:border-gray-500 hover:text-gray-200'
             }`}
         >
             {label}
@@ -66,24 +66,20 @@ export function SearchAndFilters({
     }, [filters, onFiltersChange]);
 
     return (
-        <>
-            {/* ПОИСК */}
-            <div className="shrink-0">
+        <div className="space-y-4">
+            <div className="bg-[#1E2023] border border-gray-800 rounded-2xl p-4 shadow-sm">
                 <input
                     value={search}
                     onChange={(e) => onSearchChange(e.target.value)}
                     placeholder={`Поиск ${stepLabels[activeStep]}...`}
-                    className="w-full bg-[#1E2023] border border-gray-700 p-4 outline-none focus:border-blue-300 transition-colors placeholder-gray-600 font-mono text-sm"
+                    className="w-full bg-[#141517] border border-gray-800 rounded-2xl p-4 outline-none focus:border-blue-300 transition-colors placeholder-gray-600 font-mono text-sm text-white"
                 />
             </div>
 
-            {/* ФИЛЬТРЫ */}
-            <div className="shrink-0 flex flex-wrap gap-x-5 gap-y-2 items-center px-1">
-
-                {/* Пресет */}
-                <div className="flex items-center gap-1.5">
-                    <span className="text-[9px] text-gray-600 uppercase tracking-wider font-semibold w-10">Пресет</span>
-                    <div className="flex gap-1">
+            <div className="bg-[#1E2023] border border-gray-800 rounded-2xl p-4 shadow-sm grid gap-4">
+                <div className="grid gap-2">
+                    <span className="text-[9px] text-gray-400 uppercase tracking-wider font-semibold">Пресет</span>
+                    <div className="flex flex-wrap gap-2">
                         <FilterButton
                             active={filters.preset === 'all'}
                             label="Все"
@@ -100,10 +96,9 @@ export function SearchAndFilters({
                     </div>
                 </div>
 
-                {/* CPU Brand — показываем на всех шагах */}
-                <div className="flex items-center gap-1.5">
-                    <span className="text-[9px] text-gray-600 uppercase tracking-wider font-semibold w-10">CPU</span>
-                    <div className="flex gap-1">
+                <div className="grid gap-2">
+                    <span className="text-[9px] text-gray-400 uppercase tracking-wider font-semibold">CPU</span>
+                    <div className="flex flex-wrap gap-2">
                         <FilterButton
                             active={filters.cpuBrand === 'all'}
                             label="Все"
@@ -122,10 +117,9 @@ export function SearchAndFilters({
                     </div>
                 </div>
 
-                {/* GPU Brand — показываем на всех шагах */}
-                <div className="flex items-center gap-1.5">
-                    <span className="text-[9px] text-gray-600 uppercase tracking-wider font-semibold w-10">GPU</span>
-                    <div className="flex gap-1">
+                <div className="grid gap-2">
+                    <span className="text-[9px] text-gray-400 uppercase tracking-wider font-semibold">GPU</span>
+                    <div className="flex flex-wrap gap-2">
                         <FilterButton
                             active={filters.gpuBrand === 'all'}
                             label="Все"
@@ -146,11 +140,9 @@ export function SearchAndFilters({
                             label="Intel"
                             onClick={() => handleGpuBrandChange('intel')}
                         />
-
-
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
