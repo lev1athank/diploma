@@ -220,15 +220,18 @@ export default function Configurator() {
     const currentStep = steps[activeIdx];
 
     const uniqueResults = useMemo(() => {
-        if (!result?.data) return [] as HardwareComponent[];
+        if (!result?.data || !currentStep) return [] as HardwareComponent[];
+
+        const filtered = applyFilters(result.data, filters, currentStep.id);
         const seen = new Set<string>();
-        return result.data.filter(item => {
+
+        return filtered.filter(item => {
             const key = item.slug || item.name;
             if (seen.has(key)) return false;
             seen.add(key);
             return true;
         });
-    }, [result]);
+    }, [result, currentStep?.id, filters]);
 
     // Выбор готового пресета
     const handleSelectPreset = (preset: Preset) => {
@@ -251,13 +254,19 @@ export default function Configurator() {
         if (!currentStep) return;
         setLoading(true);
         try {
-            let url = `http://127.0.0.1:8000/hardware/${currentStep.urlTag}?search=${search}`;
+            const selectedCpu = steps.find(step => step.id === 'cpu')?.selected;
+            const cpuSocket = selectedCpu ? (selectedCpu.specifications as any)?.socket : undefined;
+
+            let url = `http://127.0.0.1:8000/hardware/${currentStep.urlTag}?search=${encodeURIComponent(search)}`;
             
             if (currentStep.id === 'cpu' && filters.cpuBrand !== 'all') {
-                url += `&brand=${filters.cpuBrand}`;
+                url += `&cpu_brand=${filters.cpuBrand}`;
             }
             if (currentStep.id === 'gpu' && filters.gpuBrand !== 'all') {
-                url += `&brand=${filters.gpuBrand}`;
+                url += `&gpu_brand=${filters.gpuBrand}`;
+            }
+            if (currentStep.id === 'motherboard' && cpuSocket) {
+                url += `&cpu_socket=${encodeURIComponent(cpuSocket)}`;
             }
 
             const res = await fetch(url);
@@ -270,7 +279,7 @@ export default function Configurator() {
         } finally {
             setLoading(false);
         }
-    }, [currentStep, search, filters.cpuBrand, filters.gpuBrand]);
+    }, [currentStep?.urlTag, currentStep?.id, search, filters.cpuBrand, filters.gpuBrand, steps]);
 
     // Запрос к API с дебаунсом при вводе поискового запроса или смене фильтров
     useEffect(() => {
