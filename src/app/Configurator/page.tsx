@@ -128,6 +128,38 @@ const isMotherboardSpecs = (specs?: HardwareComponent['specifications']): specs 
     return !!specs && typeof (specs as any).form_factor === 'string' && typeof (specs as any).socket === 'string';
 };
 
+// ─── ФУНКЦИЯ ФИЛЬТРАЦИИ ДАННЫХ ────────────────────────────────────────────────
+
+function applyFilters(
+    items: HardwareComponent[],
+    filters: Filters,
+    stepId: Step['id']
+): HardwareComponent[] {
+    let result = [...items];
+
+    // Фильтр по бренду CPU
+    if (stepId === 'cpu' && filters.cpuBrand !== 'all') {
+        result = result.filter(item => {
+            const name = item.name.toLowerCase();
+            if (filters.cpuBrand === 'intel') return name.includes('intel') || name.includes('core') || name.includes('celeron') || name.includes('pentium') || name.includes('xeon');
+            if (filters.cpuBrand === 'amd') return name.includes('amd') || name.includes('ryzen') || name.includes('athlon') || name.includes('epyc');
+            return true;
+        });
+    }
+
+    // Фильтр по бренду GPU
+    if (stepId === 'gpu' && filters.gpuBrand !== 'all') {
+        result = result.filter(item => {
+            const name = item.name.toLowerCase();
+            if (filters.gpuBrand === 'nvidia') return name.includes('nvidia') || name.includes('geforce') || name.includes('rtx') || name.includes('gtx') || name.includes('quadro');
+            if (filters.gpuBrand === 'amd') return name.includes('amd') || name.includes('radeon') || name.includes('rx ') || name.includes('vega');
+            return true;
+        });
+    }
+
+    return result;
+}
+
 // ─── ЭКРАН ВЫБОРА ПРЕСЕТА ─────────────────────────────────────────────────────
 
 function PresetSelector({ onSelect }: { onSelect: (preset: Preset) => void }) {
@@ -165,35 +197,7 @@ function PresetSelector({ onSelect }: { onSelect: (preset: Preset) => void }) {
 
 // ─── ФУНКЦИЯ ФИЛЬТРАЦИИ ДАННЫХ ────────────────────────────────────────────────
 
-function applyFilters(
-    items: HardwareComponent[],
-    filters: Filters,
-    stepId: Step['id']
-): HardwareComponent[] {
-    let result = [...items];
-
-    // Фильтр по бренду CPU
-    if (stepId === 'cpu' && filters.cpuBrand !== 'all') {
-        result = result.filter(item => {
-            const name = item.name.toLowerCase();
-            if (filters.cpuBrand === 'intel') return name.includes('intel') || name.includes('core') || name.includes('celeron') || name.includes('pentium') || name.includes('xeon');
-            if (filters.cpuBrand === 'amd') return name.includes('amd') || name.includes('ryzen') || name.includes('athlon') || name.includes('epyc');
-            return true;
-        });
-    }
-
-    // Фильтр по бренду GPU
-    if (stepId === 'gpu' && filters.gpuBrand !== 'all') {
-        result = result.filter(item => {
-            const name = item.name.toLowerCase();
-            if (filters.gpuBrand === 'nvidia') return name.includes('nvidia') || name.includes('geforce') || name.includes('rtx') || name.includes('gtx') || name.includes('quadro');
-            if (filters.gpuBrand === 'amd') return name.includes('amd') || name.includes('radeon') || name.includes('rx ') || name.includes('vega');
-            return true;
-        });
-    }
-
-    return result;
-}
+// Filtering logic moved to ./components/ResultsGrid
 
 // ─── ГЛАВНЫЙ КОНФИГУРАТОР ─────────────────────────────────────────────────────
 
@@ -219,7 +223,7 @@ export default function Configurator() {
 
     const currentStep = steps[activeIdx];
 
-    const uniqueResults = useMemo(() => {
+    const uniqueResults = useMemo<HardwareComponent[]>(() => {
         if (!result?.data || !currentStep) return [] as HardwareComponent[];
 
         const filtered = applyFilters(result.data, filters, currentStep.id);
@@ -382,7 +386,7 @@ export default function Configurator() {
                         <div
                             key={preset.key}
                             onClick={() => handleSelectPreset(preset)}
-                            className="bg-[#141517] border border-gray-800 p-6 rounded-xl cursor-pointer hover:border-gray-600 transition-all group hover:scale-[1.02] flex flex-col justify-between min-h-[220px]"
+                            className="bg-[#141517] border border-gray-800 p-6 rounded-xl cursor-pointer hover:border-gray-600 transition-all group hover:scale-[1.02] flex flex-col justify-between min-h-55"
                         >
                             <div>
                                 <div className="text-3xl mb-4 group-hover:animate-pulse">{preset.icon}</div>
@@ -422,13 +426,13 @@ export default function Configurator() {
                     )}
                     <div className="bg-[#1E2023] border border-gray-800 rounded-2xl p-4">
                         {loading ? (
-                            <div className="min-h-[280px] flex flex-col justify-center items-center text-gray-500">
+                            <div className="min-h-70 flex flex-col justify-center items-center text-gray-500">
                                 <div className="w-8 h-8 border-2 border-blue-400 border-t-transparent rounded-full animate-spin mb-4"></div>
                                 <div className="text-xs uppercase tracking-widest font-bold">Поиск компонентов в базе данных...</div>
                             </div>
                         ) : uniqueResults.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                                {uniqueResults.map((item) => {
+                                {uniqueResults.map((item: HardwareComponent) => {
                                     const isSelectedInCurrentStep = currentStep?.selected?.slug === item.slug;
                                     return (
                                         <ComponentCard
@@ -441,7 +445,7 @@ export default function Configurator() {
                                 })}
                             </div>
                         ) : (
-                            <div className="min-h-[280px] border border-dashed border-gray-800 rounded-xl flex flex-col justify-center items-center text-gray-600">
+                            <div className="min-h-70 border border-dashed border-gray-800 rounded-xl flex flex-col justify-center items-center text-gray-600">
                                 <div className="text-2xl mb-2">🔍</div>
                                 <div className="text-xs uppercase tracking-widest font-bold mb-1">Ничего не найдено</div>
                                 <div className="text-[11px] text-gray-500">Попробуйте изменить поисковый запрос или сбросить фильтры производителей.</div>
