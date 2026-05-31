@@ -36,10 +36,7 @@ export default function RootLayout({
             <Link href={"/WorkplaceOrganization"}>Организация рабочего места</Link>
             <Link href={"/Maintenance"}>Техническое обслуживание</Link>
           </nav>
-          <div className="flex gap-8 items-center">
-            <span >Вход</span>
-            <span className="text-black px-6 py-2 bg-blue-400">Начать сейчас</span>
-          </div>
+
         </header>
         {children}
       </body>

@@ -261,7 +261,8 @@ export default function Configurator() {
             const selectedCpu = steps.find(step => step.id === 'cpu')?.selected;
             const cpuSocket = selectedCpu ? (selectedCpu.specifications as any)?.socket : undefined;
 
-            let url = `http://127.0.0.1:8000/hardware/${currentStep.urlTag}?search=${encodeURIComponent(search)}`;
+            const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000';
+            let url = `${apiBase}/hardware/${currentStep.urlTag}?search=${encodeURIComponent(search)}`;
             
             if (currentStep.id === 'cpu' && filters.cpuBrand !== 'all') {
                 url += `&cpu_brand=${filters.cpuBrand}`;

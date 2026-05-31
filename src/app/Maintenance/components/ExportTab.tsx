@@ -43,7 +43,8 @@ export default function ExportTab({ config, intensity }: Props) {
         };
 
         try {
-            const res = await fetch("http://127.0.0.1:8000/maintenance/generate-pdf", {
+                const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000';
+                const res = await fetch(`${apiBase}/maintenance/generate-pdf`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
