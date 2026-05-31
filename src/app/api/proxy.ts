@@ -9,7 +9,8 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'Missing parameters' }, { status: 400 });
     }
 
-    const targetUrl = `http://127.0.0.1:8000/hardware/${type}?search=${encodeURIComponent(str)}`;
+    const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000';
+    const targetUrl = `${apiBase}/hardware/${type}?search=${encodeURIComponent(str)}`;
     
     // ЛОГ ДЛЯ ТЕРМИНАЛА (проверь его, когда упадет ошибка)
     console.log(`>>> Proxying request to: ${targetUrl}`);

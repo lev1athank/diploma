@@ -31,7 +31,8 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
         const timer = setTimeout(async () => {
             setLoadingCpu(true);
             try {
-                const res = await fetch(`http://127.0.0.1:8000/hardware/cpus?search=${config.cpuName}`);
+                const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000';
+                const res = await fetch(`${apiBase}/hardware/cpus?search=${config.cpuName}`);
                 if (res.ok) {
                     const data = await res.json();
                     setCpuResults(data.data || []);
@@ -48,7 +49,8 @@ export default function ConfigPanel({ config, setConfig, intensity, setIntensity
         const timer = setTimeout(async () => {
             setLoadingGpu(true);
             try {
-                const res = await fetch(`http://127.0.0.1:8000/hardware/gpus?search=${config.gpuName}`);
+                const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000';
+                const res = await fetch(`${apiBase}/hardware/gpus?search=${config.gpuName}`);
                 if (res.ok) {
                     const data = await res.json();
                     setGpuResults(data.data || []);
