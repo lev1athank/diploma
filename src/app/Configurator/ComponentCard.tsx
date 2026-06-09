@@ -48,9 +48,12 @@ export const ComponentCard = ({ component, isSelected, onSelect, isCompatible = 
             }
             case 'gpus': {
                 const s = specs as GPUSpecs;
+                const memoryDisplay = s.memory_size
+                    ? (s.memory_type ? `${s.memory_size} ${s.memory_type}` : `${s.memory_size}`)
+                    : undefined;
                 return (
                     <>
-                        {renderInfoRow("Память", `${s.memory_size ? s.memory_size + " " + s.memory_type : '—'}`)}
+                        {renderInfoRow("Память", memoryDisplay)}
                         {renderInfoRow("Частота", s.boost_clock)}
                         {renderInfoRow("TDP", s.tdp)}
                     </>
