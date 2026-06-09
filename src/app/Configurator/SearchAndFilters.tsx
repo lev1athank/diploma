@@ -1,5 +1,6 @@
-'use client'
+"use client"
 import { useCallback } from "react"
+import { useConfiguratorStore, PRESETS } from "../../../store/useConfiguratorStore";
 
 export interface Filters {
     cpuBrand: 'all' | 'intel' | 'amd';
@@ -47,15 +48,23 @@ export function SearchAndFilters({
 }: SearchAndFiltersProps) {
     
     const stepLabels: Record<string, string> = {
-        cpu: 'процессор',
-        gpu: 'видеокарта',
-        mem: 'память',
-        motherboard: 'мат. плата',
+        cpu: 'процессора',
+        gpu: 'видеокарты',
+        mem: 'памяти',
+        motherboard: 'материнской платы',
     };
+
+    const setSelectedPreset = useConfiguratorStore(state => state.setSelectedPreset);
 
     const handlePresetChange = useCallback((preset: Filters['preset']) => {
         onFiltersChange({ ...filters, preset });
-    }, [filters, onFiltersChange]);
+        if (preset === 'all') {
+            setSelectedPreset(null);
+            return;
+        }
+        const presetObj = PRESETS.find(p => p.key === preset);
+        if (presetObj) setSelectedPreset(presetObj);
+    }, [filters, onFiltersChange, setSelectedPreset]);
 
     const handleCpuBrandChange = useCallback((brand: Filters['cpuBrand']) => {
         onFiltersChange({ ...filters, cpuBrand: brand });

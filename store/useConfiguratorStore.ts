@@ -20,6 +20,61 @@ export interface Preset {
     searchDefaults: Record<string, string>;
 }
 
+export const PRESETS: Preset[] = [
+    {
+        key: 'office',
+        label: 'Офисный ПК',
+        icon: '🖥️',
+        description: 'Документы, браузер, почта. Тихая и экономичная система для ежедневных задач.',
+        accent: 'border-emerald-500 bg-emerald-500/10',
+        searchDefaults: {
+            cpus: '',
+            gpus: '',
+            mem: '',
+            motherboard: ''
+        }
+    },
+    {
+        key: 'multimedia',
+        label: 'Мультимедиа',
+        icon: '🎬',
+        description: 'Фото, видео, стриминг. Баланс производительности для творческих задач.',
+        accent: 'border-purple-500 bg-purple-500/10',
+        searchDefaults: {
+            cpus: 'Core i5, Ryzen 5',
+            gpus: '',
+            mem: '',
+            motherboard: ''
+        }
+    },
+    {
+        key: 'gaming',
+        label: 'Игровой ПК',
+        icon: '🎮',
+        description: 'Максимальный FPS и плавный геймплей. Для требовательных современных игр.',
+        accent: 'border-blue-500 bg-blue-500/10',
+        searchDefaults: {
+            cpus: '',
+            gpus: '',
+            mem: '',
+            motherboard: ''
+        }
+    },
+    {
+        key: 'professional',
+        label: 'Профессиональный',
+        icon: '⚡',
+        description: '3D, рендер, ML. Максимальная мощность для профессиональных задач.',
+        accent: 'border-orange-500 bg-orange-500/10',
+        searchDefaults: {
+            cpus: '',
+            gpus: '',
+            mem: '',
+            motherboard: '  '
+        }
+    }
+];
+
 export interface Step {
     id: 'cpu' | 'gpu' | 'mem' | 'motherboard';
     label: string;
@@ -30,6 +85,7 @@ export interface Step {
 
 interface ConfiguratorState {
     selectedPreset: Preset | null;
+    presets: Preset[];
     steps: Step[];
     activeIdx: number;
     search: string;
@@ -41,6 +97,7 @@ interface ConfiguratorState {
     setActiveIdx: (updater: number | ((prev: number) => number)) => void;
     setSearch: (search: string) => void;
     setFilters: (updater: Filters | ((prev: Filters) => Filters)) => void;
+    setPresets: (updater: Preset[] | ((prev: Preset[]) => Preset[])) => void;
     resetConfigurator: () => void;
 }
 
@@ -55,6 +112,7 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
         (set) => ({
             // Начальные значения
             selectedPreset: null,
+            presets: PRESETS,
             steps: [],
             activeIdx: 0,
             search: "",
@@ -75,6 +133,9 @@ export const useConfiguratorStore = create<ConfiguratorState>()(
             
             setFilters: (updater) => set((state) => ({
                 filters: typeof updater === 'function' ? updater(state.filters) : updater
+            })),
+            setPresets: (updater) => set((state) => ({
+                presets: typeof updater === 'function' ? updater(state.presets) : updater
             })),
 
             resetConfigurator: () => set({

@@ -3,20 +3,9 @@ import { useState, useEffect, useCallback, useMemo } from "react"
 import { ComponentCard } from "./ComponentCard"
 import { SearchAndFilters, type Filters } from "./SearchAndFilters"
 import { ApiResponse, HardwareComponent, CPUSpecs, GPUSpecs, MotherboardData, MemoryData } from "../../../interface/specs";
-import { useConfiguratorStore } from "../../../store/useConfiguratorStore";
+import { useConfiguratorStore, PRESETS, type Preset } from "../../../store/useConfiguratorStore";
 
 // ─── ТИПЫ ────────────────────────────────────────────────────────────────────
-
-type PresetKey = 'office' | 'multimedia' | 'gaming' | 'professional';
-
-interface Preset {
-    key: PresetKey;
-    label: string;
-    icon: string;
-    description: string;
-    accent: string;
-    searchDefaults: Record<string, string>;
-}
 
 interface Step {
     id: 'cpu' | 'gpu' | 'mem' | 'motherboard';
@@ -26,66 +15,7 @@ interface Step {
     lastSearch: string;
 }
 
-// ─── ПРЕСЕТЫ ─────────────────────────────────────────────────────────────────
-
-const PRESETS: Preset[] = [
-    {
-        key: 'office',
-        label: 'Офисный ПК',
-        icon: '🖥️',
-        description: 'Документы, браузер, почта. Тихая и экономичная система для ежедневных задач.',
-        accent: 'border-emerald-500 bg-emerald-500/10',
-        // Для офиса берем младшие процессоры (Core i3 и Ryzen 3) и встроенную/бюджетную графику
-        searchDefaults: { 
-            cpus: 'Core i3, Ryzen 3', 
-            gpus: 'Intel UHD, Radeon Graphics, GT 1030', 
-            mem: 'Crucial, Kingston', 
-            motherboard: 'Gigabyte, MSI' 
-        }
-    },
-    {
-        key: 'multimedia',
-        label: 'Мультимедиа',
-        icon: '🎬',
-        description: 'Фото, видео, стриминг. Баланс производительности для творческих задач.',
-        accent: 'border-purple-500 bg-purple-500/10',
-        // Средний сегмент: i5/Ryzen 5 и видеокарты прошлых/текущих поколений (RTX 3060, RX 6600)
-        searchDefaults: { 
-            cpus: 'Core i5, Ryzen 5', 
-            gpus: 'RTX 3060, RX 6600, RTX 4060', 
-            mem: 'Kingston, G.Skill', 
-            motherboard: 'MSI, Gigabyte' 
-        }
-    },
-    {
-        key: 'gaming',
-        label: 'Игровой ПК',
-        icon: '🎮',
-        description: 'Максимальный FPS и плавный геймплей. Для требовательных современных игр.',
-        accent: 'border-blue-500 bg-blue-500/10',
-        // Мощный игровой конфиг: i7/Ryzen 7 + мощные видеокарты (RTX 4070, RX 7800)
-        searchDefaults: { 
-            cpus: 'Core i7, Ryzen 7', 
-            gpus: 'RTX 4070, RX 7700, RX 7800, RTX 4080', 
-            mem: 'Corsair, GSkill', 
-            motherboard: '' 
-        }
-    },
-    {
-        key: 'professional',
-        label: 'Профессиональный',
-        icon: '⚡',
-        description: '3D, рендер, ML. Максимальная мощность для профессиональных задач.',
-        accent: 'border-orange-500 bg-orange-500/10',
-        // Топовое железо для рабочих станций: Core i9/Ryzen 9 + флагманские карты (преимущественно Nvidia для CUDA/ML, но и мощные AMD)
-        searchDefaults: { 
-            cpus: 'Ryzen 9, Core i9', 
-            gpus: 'RTX 4090, RTX 4080, RX 7900 XTX', 
-            mem: 'GSkill, Corsair', 
-            motherboard: '  ' 
-        }
-    }
-];
+// PRESETS centrally provided from store/useConfiguratorStore
 
 const INITIAL_STEPS_TEMPLATES = [
     { id: 'cpu', label: 'Процессор', selected: null, urlTag: 'cpus', lastSearch: '' },
@@ -137,22 +67,22 @@ function applyFilters(
 ): HardwareComponent[] {
     let result = [...items];
 
-    // Фильтр по бренду CPU
+    // Фильтр по бренду CPU — простой поиск по ключевым словам
     if (stepId === 'cpu' && filters.cpuBrand !== 'all') {
         result = result.filter(item => {
             const name = item.name.toLowerCase();
-            if (filters.cpuBrand === 'intel') return name.includes('intel') || name.includes('core') || name.includes('celeron') || name.includes('pentium') || name.includes('xeon');
-            if (filters.cpuBrand === 'amd') return name.includes('amd') || name.includes('ryzen') || name.includes('athlon') || name.includes('epyc');
+            if (filters.cpuBrand === 'intel') return name.includes('core');
+            if (filters.cpuBrand === 'amd') return name.includes('ryzen');
             return true;
         });
     }
 
-    // Фильтр по бренду GPU
+    // Фильтр по бренду GPU — простой поиск по ключевым словам
     if (stepId === 'gpu' && filters.gpuBrand !== 'all') {
         result = result.filter(item => {
             const name = item.name.toLowerCase();
-            if (filters.gpuBrand === 'nvidia') return name.includes('nvidia') || name.includes('geforce') || name.includes('rtx') || name.includes('gtx') || name.includes('quadro');
-            if (filters.gpuBrand === 'amd') return name.includes('amd') || name.includes('radeon') || name.includes('rx ') || name.includes('vega');
+            if (filters.gpuBrand === 'nvidia') return name.includes('geforce');
+            if (filters.gpuBrand === 'amd') return name.includes('radeon');
             return true;
         });
     }
@@ -223,6 +153,14 @@ export default function Configurator() {
 
     const currentStep = steps[activeIdx];
 
+    const selectedCpu = useMemo(() => {
+        return steps.find(step => step.id === 'cpu')?.selected;
+    }, [steps]);
+
+    const cpuSocket = useMemo(() => {
+        return selectedCpu ? (selectedCpu.specifications as any)?.socket : undefined;
+    }, [selectedCpu]);
+
     const uniqueResults = useMemo<HardwareComponent[]>(() => {
         if (!result?.data || !currentStep) return [] as HardwareComponent[];
 
@@ -254,47 +192,52 @@ export default function Configurator() {
     };
 
     // Загрузка компонентов из API
-    const fetchComponents = useCallback(async () => {
+    const fetchComponents = useCallback(async (signal: AbortSignal) => {
         if (!currentStep) return;
         setLoading(true);
         try {
-            const selectedCpu = steps.find(step => step.id === 'cpu')?.selected;
-            const cpuSocket = selectedCpu ? (selectedCpu.specifications as any)?.socket : undefined;
-
             const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000';
             let url = `${apiBase}/hardware/${currentStep.urlTag}?search=${encodeURIComponent(search)}`;
             
-            if (currentStep.id === 'cpu' && filters.cpuBrand !== 'all') {
-                url += `&cpu_brand=${filters.cpuBrand}`;
-            }
-            if (currentStep.id === 'gpu' && filters.gpuBrand !== 'all') {
-                url += `&gpu_brand=${filters.gpuBrand}`;
+            if (filters.preset !== 'all') {
+                url += `&preset=${encodeURIComponent(filters.preset)}`;
             }
             if (currentStep.id === 'motherboard' && cpuSocket) {
                 url += `&cpu_socket=${encodeURIComponent(cpuSocket)}`;
             }
 
-            const res = await fetch(url);
-            if (res.ok) {
-                const data = await res.json();
-                setResult(data);
+            const res = await fetch(url, { signal });
+            if (!signal.aborted && res.ok) {
+                const body = await res.json();
+                const normalized = Array.isArray(body)
+                    ? { source: 'api', data: body }
+                    : body;
+                setResult(normalized);
             }
-        } catch (error) {
-            console.error("Ошибка при загрузке данных конфигуратора:", error);
+        } catch (error: any) {
+            if (error.name !== 'AbortError') {
+                console.error("Ошибка при загрузке данных конфигуратора:", error);
+            }
         } finally {
             setLoading(false);
         }
-    }, [currentStep?.urlTag, currentStep?.id, search, filters.cpuBrand, filters.gpuBrand, steps]);
+    }, [currentStep?.urlTag, currentStep?.id, search, filters.cpuBrand, filters.gpuBrand, filters.preset, currentStep?.id === 'motherboard' ? cpuSocket : undefined]);
 
-    // Запрос к API с дебаунсом при вводе поискового запроса или смене фильтров
+    // Запрос к API с дебаунсом при вводе поискового запроса или смене фильтров/шага
     useEffect(() => {
         if (!selectedPreset || !currentStep) return;
+
+        const controller = new AbortController();
+        setResult(null);
         const delayDebounce = setTimeout(() => {
-            fetchComponents();
+            fetchComponents(controller.signal);
         }, 300);
 
-        return () => clearTimeout(delayDebounce);
-    }, [search, filters.cpuBrand, filters.gpuBrand, activeIdx, selectedPreset, fetchComponents]);
+            return () => {
+                clearTimeout(delayDebounce);
+                controller.abort();
+            };
+        }, [search, activeIdx, selectedPreset, fetchComponents]);
 
     // Изменение поисковой строки при переключении шагов
     useEffect(() => {
@@ -366,6 +309,13 @@ export default function Configurator() {
         alert("Экспорт конфигурации в PDF...");
     };
 
+    const handleSearchChange = (value: string) => {
+        if (filters.preset !== 'all') {
+            setFilters(prev => ({ ...prev, preset: 'all' }));
+        }
+        setSearch(value);
+    };
+
     // ЭКРАН 1: Выбор пресета
     if (!selectedPreset) {
         return (
@@ -418,7 +368,7 @@ export default function Configurator() {
                     {currentStep && (
                         <SearchAndFilters
                             search={search}
-                            onSearchChange={setSearch}
+                            onSearchChange={handleSearchChange}
                             filters={filters}
                             onFiltersChange={setFilters}
                             activeStep={currentStep.id}
