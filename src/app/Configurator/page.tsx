@@ -305,8 +305,42 @@ export default function Configurator() {
         }
     };
 
-    const handleDownloadPDF = () => {
-        alert("Экспорт конфигурации в PDF...");
+    const handleDownloadPDF = async () => {
+        const selectedComponents = steps
+            .filter(step => step.selected !== null)
+            .map(step => ({
+                type: step.id,
+                name: step.selected?.name,
+                specifications: step.selected?.specifications || undefined,
+            }));
+
+        if (selectedComponents.length === 0) {
+            alert("Выберите хотя бы один компонент перед экспортом.");
+            return;
+        }
+
+        try {
+            const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000';
+            const res = await fetch(`${apiBase}/hardware/generate-pdf`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(selectedComponents),
+            });
+            if (!res.ok) throw new Error(`Сервер вернул ${res.status}`);
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pc_configuration.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error(err);
+            alert('Не удалось скачать PDF. Проверьте работу бэкенда.');
+        }
     };
 
     const handleSearchChange = (value: string) => {
